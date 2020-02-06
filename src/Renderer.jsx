@@ -22,29 +22,35 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import { useEffect } from 'react';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
+import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import { CardActions } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     container: {
         border: '1px solid black',
         borderRadius: 20,
-        backgroundColor: theme.palette.white,
-        margin: 50,
-        height: '100%',
-        padding: 70,
+        backgroundColor: theme.palette.primary,
+        height: 300,
+        padding: '20px',
     },
     diagramContainer: {
         border: '1px dashed black',
         borderRadius: 20,
-        height: 300,
+        height: '100%',
         position: 'relative',
         display: 'flex',
-        justifyContent: 'center'
+        overflowX: 'auto',
+        padding: '0px 30px'
     },
     imgContainer: {
         borderRadius: '100%',
         height: '100%',
         width: 100,
         overflow: 'hidden',
+        margin: '10px',
     },
     img: {
         width: '100%',
@@ -52,7 +58,18 @@ const useStyles = makeStyles((theme) => ({
     },
     mediator: {
         display: 'flex',
-        marginInlineEnd: '60px'
+        marginInlineEnd: '60px',
+    },
+    cardContainer: {
+        display: "flex",
+        alignItems: "center",
+    },
+    name: {
+        textAlign: "center",
+        width: '100px',
+    },
+    card: {
+        minHeight: '200px'
     }
 }));
 
@@ -71,150 +88,64 @@ function Renderer() {
 
     useEffect(() => {
 
+        let path = "";
+        let jsonObject = null;
+
+        if (window["runConfig"]) {
+
+            path = window["runConfig"].resourcePath + "/";
+            jsonObject = window["runConfig"].jsonValue;
+        }
+
         const mediatorIcons = [
             {
                 'key': 'logmediator',
                 'name': 'log',
-                'src': './img/icons/mediatorIcons/log-mediator.svg',
+                'src': path + 'img/icons/mediatorIcons/log-mediator.svg',
             },
             {
                 'key': 'propertymediator',
                 'name': 'property',
-                'src': './img/icons/mediatorIcons/property-mediator.svg',
+                'src': path + 'img/icons/mediatorIcons/property-mediator.svg',
             },
             {
                 'key': 'dropmediator',
                 'name': 'drop',
-                'src': './img/icons/mediatorIcons/drop-mediator.svg',
+                'src': path + 'img/icons/mediatorIcons/drop-mediator.svg',
             },
             {
                 'key': 'propertygroupmediator',
                 'name': 'propertyGroup',
-                'src': './img/icons/mediatorIcons/propertyGroup-mediator.svg',
+                'src': path + 'img/icons/mediatorIcons/propertyGroup-mediator.svg',
             },
             {
                 'key': 'scriptmediator',
                 'name': 'script',
-                'src': './img/icons/mediatorIcons/script-mediator.svg',
+                'src': path + 'img/icons/mediatorIcons/script-mediator.svg',
             },
             {
                 'key': 'classmediator',
                 'name': 'class',
-                'src': './img/icons/mediatorIcons/class-mediator.svg',
-            },
-            {
-                'key': 'scriptmediator',
-                'name': 'script',
-                'src': './img/icons/mediatorIcons/class-mediator.svg',
+                'src': path + 'img/icons/mediatorIcons/class-mediator.svg',
             },
             {
                 'key': 'payloadfactorymediator',
                 'name': 'payloadfactory',
-                'src': './img/icons/mediatorIcons/payloadFactory-mediator.svg',
+                'src': path + 'img/icons/mediatorIcons/payloadFactory-mediator.svg',
             },
         ];
 
-        let jsonText = {
-            "declaration": {
-                "attributes": {
-                    "version": "1.0",
-                    "encoding": "UTF-8"
-                }
-            },
-            "elements": [
-                {
-                    "type": "element",
-                    "name": "sequence",
-                    "attributes": {
-                        "name": "json_validator",
-                        "trace": "disable",
-                        "xmlns": "http://ws.apache.org/ns/synapse"
-                    },
-                    "elements": [
-                        {
-                            "type": "element",
-                            "name": "log",
-                            "attributes": {
-                                "level": "custom"
-                            },
-                            "elements": [
-                                {
-                                    "type": "element",
-                                    "name": "property",
-                                    "attributes": {
-                                        "name": "IN_MESSAGE",
-                                        "value": "json_validator"
-                                    }
-                                }
-                            ]
-                        },
-                        {
-                            "type": "element",
-                            "name": "property",
-                            "attributes": {
-                                "name": "maxPropertyCount",
-                                "value": "100"
-                            }
-                        },
-                        {
-                            "type": "element",
-                            "name": "property",
-                            "attributes": {
-                                "name": "maxStringLength",
-                                "value": "100"
-                            }
-                        },
-                        {
-                            "type": "element",
-                            "name": "property",
-                            "attributes": {
-                                "name": "maxArrayElementCount",
-                                "value": "100"
-                            }
-                        },
-                        {
-                            "type": "element",
-                            "name": "property",
-                            "attributes": {
-                                "name": "maxKeyLength",
-                                "value": "100"
-                            }
-                        },
-                        {
-                            "type": "element",
-                            "name": "property",
-                            "attributes": {
-                                "name": "maxJsonDepth",
-                                "value": "100"
-                            }
-                        },
-                        {
-                            "type": "element",
-                            "name": "property",
-                            "attributes": {
-                                "name": "RequestMessageBufferSize",
-                                "value": "1024"
-                            }
-                        },
-                        {
-                            "type": "element",
-                            "name": "class",
-                            "attributes": {
-                                "name": "org.wso2.carbon.apimgt.gateway.mediators.JsonSchemaValidator"
-                            }
-                        }
-                    ]
-                }
-            ]
-        }
+        let jsonText = JSON.parse(jsonObject);
 
         let newAddedMediators = [];
-        for (let x in mediatorIcons) {
-            for (let y in jsonText.elements[0].elements) {
-                if (mediatorIcons[x].name === jsonText.elements[0].elements[y].name) {
+        for (let icons in mediatorIcons) {
+            for (let mediators in jsonText.elements[0].elements) {
+                if (mediatorIcons[icons].name === jsonText.elements[0].elements[mediators].name) {
                     newAddedMediators.push({
                         uuid: generateId(),
-                        ...mediatorIcons[x]
+                        ...mediatorIcons[icons],
+                        name: mediatorIcons[icons].name,
+                        attribute_name: jsonText.elements[0].elements[mediators].attributes.name
                     });
                 }
             }
@@ -228,9 +159,39 @@ function Renderer() {
                 <Grid className={classes.diagramContainer}>
                     {addedMediators.map((mediator) => {
                         return (
-                            <div className={classes.mediator}>
-                                <div className={classes.imgContainer} key={mediator.uuid}>
-                                    <img src={(mediator.src)} alt='{madiator.name}' className={classes.img} />
+                            <div className={classes.mediator} key={mediator.uuid}>
+                                <div className={classes.cardContainer}>
+                                    <Card className={classes.card}>
+                                        <CardContent>
+                                            <Typography
+                                                className={classes.name}
+                                                noWrap={true}
+                                                title={`${mediator.name}Mediator`}
+                                            >
+                                                {mediator.name}Mediator
+                                                </Typography>
+                                        </CardContent>
+                                        <CardMedia
+                                            className={classes.imgContainer}
+                                            key={mediator.uuid}
+                                        >
+                                            <img
+                                                src={mediator.src}
+                                                alt='{madiator.name}'
+                                                className={classes.img}
+                                            />
+                                        </CardMedia>
+                                        <CardActions>
+                                            <Typography
+                                                className={classes.name}
+                                                noWrap={true}
+                                                title={mediator.attribute_name}
+                                            >
+                                                {mediator.attribute_name}
+                                            </Typography>
+                                        </CardActions>
+
+                                    </Card>
                                 </div>
                                 <div>
                                     <ArrowRightAltIcon
@@ -239,9 +200,10 @@ function Renderer() {
                                             fontSize: 60,
                                             height: '100%',
                                             position: 'absolute',
-                                        }} />
+                                        }}
+                                    />
                                 </div>
-                            </div>      
+                            </div>
                         );
                     })}
                 </Grid>
