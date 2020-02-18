@@ -133,25 +133,30 @@ function Renderer() {
                 'name': 'payloadfactory',
                 'src': path + 'img/icons/mediatorIcons/payloadFactory-mediator.svg',
             },
+            {
+                'key': 'headermediator',
+                'name': 'header',
+                'src': path + 'img/icons/mediatorIcons/header-mediator.svg',
+            },
         ];
 
         let jsonText = JSON.parse(jsonObject);
-
+        
         let newAddedMediators = [];
-        for (let icons in mediatorIcons) {
-            for (let mediators in jsonText.elements[0].elements) {
-                if (mediatorIcons[icons].name === jsonText.elements[0].elements[mediators].name) {
-                    newAddedMediators.push({
-                        uuid: generateId(),
-                        ...mediatorIcons[icons],
-                        name: mediatorIcons[icons].name,
-                        attribute_name: jsonText.elements[0].elements[mediators].attributes.name
-                    });
-                }
-            }
-        }
-        setAddedMediators(newAddedMediators);
-    }, []);
+        jsonText.elements[0].elements.forEach((mediators) => {
+            mediatorIcons.filter((icons) => {
+                    if (icons.name === mediators.name) {
+                        newAddedMediators.push({
+                            uuid: generateId(),
+                            ...icons,
+                            name: icons.name,
+                            attribute_name: mediators.attributes.name
+                        });
+                    }
+                })
+            })
+            setAddedMediators(newAddedMediators);
+        }, []);
 
     return (
         <>
